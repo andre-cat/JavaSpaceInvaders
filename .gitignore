@@ -1,3 +1,12 @@
+# Carpetas de configuración de Visual Studio Code
+.vscode/
+
+# Archivo de configuración de Visual Studio Code
+.vscode/settings.json
+
+# Archivo de historial de Visual Studio Code
+.vscode/settings.json.history
+
 # Compiled class file
 *.class
 
