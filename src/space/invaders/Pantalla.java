@@ -1,6 +1,13 @@
 package space.invaders;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -24,7 +31,7 @@ public final class Pantalla extends JFrame {
     // and changes the value of the first five rows to true except by the first
     // and the last column
     public static void setAlienPositions(boolean[][] alienPositions) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             for (int j = 1; j < 9; j++) {
                 alienPositions[i][j] = true;
             }
@@ -39,19 +46,48 @@ public final class Pantalla extends JFrame {
         position[1] = (height / 10) * row;
         return position;
     }
+    // Create a function named chargeImage that receives a path to an image
+    // and returns a BufferedImage
+    public static BufferedImage chargeImage(String path) {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
 
-    // Create a function named colorAlien that receives a row, a column
-    // and returns a path to the image of the alien
-    public static String colorAlien(int row, int column) {
-        if (row == 0 || row == 1) {
-            return "src/space/invaders/images/alien1.png";
-        } else if (row == 2 || row == 3) {
-            return "src/space/invaders/images/alien2.png";
-        } else {
-            return "src/space/invaders/images/alien3.png";
+    // Create a void named drawAliens
+    // that receives a Graphics named g
+    public static void drawAliens(Graphics g) {
+        // Buffered all the images
+        BufferedImage[] alienImages = new BufferedImage[10];
+        alienImages[0] = chargeImage("src/space/invaders/images/rojo.png");
+        alienImages[1] = chargeImage("src/space/invaders/images/azul.png");
+        alienImages[2] = chargeImage("src/space/invaders/images/amarillo.png");
+        alienImages[3] = chargeImage("src/space/invaders/images/naranja.png");
+        alienImages[4] = chargeImage("src/space/invaders/images/rosado.png");
+        alienImages[5] = chargeImage("src/space/invaders/images/verde.png");
+        alienImages[6] = chargeImage("src/space/invaders/images/morado.png");
+        alienImages[7] = chargeImage("src/space/invaders/images/rojo.png");
+        alienImages[8] = chargeImage("src/space/invaders/images/azul.png");
+        alienImages[9] = chargeImage("src/space/invaders/images/amarillo.png");
+    
+        // Create a for that iterates through the rows
+        for (int i = 0; i < 10; i++) {
+            // Create a for that iterates through the columns
+            for (int j = 0; j < 10; j++) {
+                // Create a if that checks if the position is true
+                if (alienPositions[i][j]) {
+                    // Create a int array named position
+                    int[] position = getAlienPosition(i, j, height, width);
+                    // Draw the alien in the position
+                    g.drawImage(alienImages[i], position[0], position[1], null);
+                }
+            }
         }
     }
-    
 
     // When press the run show the window
     public Pantalla() {
@@ -72,8 +108,14 @@ public final class Pantalla extends JFrame {
         setVisible(true);
         // Set the window to be resizable
         setResizable(false);
-        // Set the window to close when the user clicks the close button
+        // Set alienPositions to true
+        setAlienPositions(alienPositions);
+        // Draw the aliens
+                // Set the window to close when the user clicks the close button
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Draw the aliens
+        drawAliens(panel.getGraphics());
+
     }
 
     // New board
